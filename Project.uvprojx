@@ -710,6 +710,11 @@
               <FileType>1</FileType>
               <FilePath>.\Hardware\usart.c</FilePath>
             </File>
+            <File>
+              <FileName>AD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\AD.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
