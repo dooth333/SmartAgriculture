@@ -24,6 +24,7 @@
 #include "Delay.h"
 #include "OLED.h"
 #include "DS18B20.h"
+#include "AD.h"
 #include <stdio.h>
 #include "usart.h"
 /*============================= 宏定义/重定义 ================================*/
@@ -43,10 +44,14 @@ char  Wendu_Buf[20];
 int main(void)
 {
 	OLED_Init();
+	AD_Init();
 	Usart1_Init(115200);//debug串口
 	OLED_ShowString(2, 1, "wendu:");	
 	while (1)
 	{
-
+		Light = (4000-AD_Value[0])/40;	/**> 获取光照强度 */
+		soilHumidity = (3000 - AD_Value[1])/12;	/**> 获取土壤湿度 */
+		OLED_ShowNum(2, 3, Light, 4);
+		OLED_ShowNum(2, 5, soilHumidity, 4);
 	}
 }
