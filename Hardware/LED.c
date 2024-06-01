@@ -2,7 +2,7 @@
 #include "LED.h"
 
 /**
- * @brief  LED初始化
+ * @brief  LED初始化，初始化GPIO
  * @param  None
  * @retval None
  */
