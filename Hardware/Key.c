@@ -44,7 +44,119 @@ void Key_Init(void)
 		Keys[j].Press_Time_Count = 0;
 	}
 }
-
-
-
-
+/**
+ * @brief  根据按键按下情况实行操作，放在主函数While循环中即可
+ * @param  None
+ * @retval None
+ */
+void Key_Execute()
+{
+	for (uint8_t j = 0; j < 4; j++)
+	{
+		if (Keys[j].Key_Single_Flag == 1)
+		{
+			Keys[j].Key_Single_Flag = 0;
+			sprintf(text, "Key%dDown\r\n", j + 1);
+			UsartPrintf(USART_DEBUG, text);
+			// 根据单击键值进行操作
+			switch (j + 1)
+			{
+			// 按键1
+			case 1:
+			{
+				key_msg.id = 0;
+				key_msg.pressed = true;
+			}
+			break;
+			// 按键2
+			case 2:
+			{
+				key_msg.id = 1;
+				key_msg.pressed = true;
+			}
+			break;
+			// 按键3
+			case 3:
+			{
+				key_msg.id = 2;
+				key_msg.pressed = true;
+			}
+			break;
+			// 按键4
+			case 4:
+			{
+				// Control_SetThresholds(value1);
+			}
+			break;
+			}
+		}
+		if (Keys[j].Key_Double_Flag == 1)
+		{
+			Keys[j].Key_Double_Flag = 0;
+			sprintf(text, "Key%dDoubleDown\r\n", j + 1);
+			UsartPrintf(USART_DEBUG, text);
+			// 根据双击键值进行操作
+			switch (j + 1)
+			{
+			// 按键1
+			case 1:
+			{
+			}
+			break;
+			// 按键2
+			case 2:
+			{
+			}
+			break;
+			// 按键3
+			case 3:
+			{
+			}
+			break;
+			// 按键4
+			case 4:
+			{
+			}
+			break;
+			}
+		}
+		if (Keys[j].Key_Long_Flag == 1)
+		{
+			Keys[j].Key_Long_Flag = 0;
+			sprintf(text, "Key%dLongDown\r\n", j + 1);
+			UsartPrintf(USART_DEBUG, text);
+			// 根据长按键值进行操作
+			switch (j + 1)
+			{
+			// 按键1
+			case 1:
+			{
+				LED2_Turn();
+				lightControl.ENV_free = Free_Value;
+			}
+			break;
+			// 按键2
+			case 2:
+			{
+				Servo_Turn();
+				Co2Control.ENV_free = Free_Value;
+			}
+			break;
+			// 按键3
+			case 3:
+			{
+				relay1_Turn();
+				Co2Control.ENV_free = Free_Value;
+			}
+			break;
+			// 按键4
+			case 4:
+			{
+				relay2_Turn();
+				soilHumControl.ENV_free = Free_Value;
+			}
+			break;
+			}
+		}
+	}
+}
