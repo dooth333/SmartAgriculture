@@ -160,3 +160,26 @@ void Key_Execute()
 		}
 	}
 }
+
+/**
+ * @brief  TIM4中断函数，1ms进入一次
+ * @param  无
+ * @retval None
+ */
+void TIM4_IRQHandler(void)
+{
+
+	if (TIM_GetITStatus(TIM4, TIM_IT_Update) == SET)
+	{
+
+		timedKey[0]++;
+		// 按键
+		if (timedKey[0] > timedKey[1])
+		{
+			Key_GetVlaues();
+			timedKey[0] = 0;
+		}
+		Key_Execute();
+		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+	}
+}
