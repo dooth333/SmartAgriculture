@@ -25,3 +25,32 @@ void DHT_GPIO_Init(GPIOMode_TypeDef Mode)
 
     GPIO_Init(DHT_GPIO_PORT, &GPIO_InitStructure);
 }
+
+/**
+ * @brief  DHT11模块起始信号函数
+ * @param  None
+ * @return 1或0，标志起动信号成功与否
+ */
+uint8_t DHT_Start(void)
+{
+    DHT_GPIO_Init(GPIO_Mode_Out_PP); // 输出模式
+
+    GPIO_ResetBits(DHT_GPIO_PORT, DHT_GPIO_PIN); // 输出20ms低电平后拉高
+    Delay_ms(20);
+    // delay_ms(20);
+    GPIO_SetBits(DHT_GPIO_PORT, DHT_GPIO_PIN);
+
+    DHT_GPIO_Init(GPIO_Mode_IN_FLOATING); // 输入模式
+    Delay_us(20);
+    //	delay_us(20);
+
+    if (!GPIO_ReadInputDataBit(DHT_GPIO_PORT, DHT_GPIO_PIN))
+    {
+        while (!GPIO_ReadInputDataBit(DHT_GPIO_PORT, DHT_GPIO_PIN))
+            ;
+        while (GPIO_ReadInputDataBit(DHT_GPIO_PORT, DHT_GPIO_PIN))
+            ;
+        return 1;
+    }
+    return 0;
+}
