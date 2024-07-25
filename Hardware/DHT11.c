@@ -54,3 +54,24 @@ uint8_t DHT_Start(void)
     }
     return 0;
 }
+
+/**
+ * @brief  接收DHT11发送来8位的数据
+ * @param  None
+ * @return 返回接收到的8位数据
+ */
+uint8_t DHT_Get_Byte_Data(void)
+{
+    uint8_t temp;
+    for (int i = 0; i < 8; i++)
+    {
+        temp <<= 1;
+        while (!GPIO_ReadInputDataBit(DHT_GPIO_PORT, DHT_GPIO_PIN))
+            ;
+        Delay_us(28);
+        GPIO_ReadInputDataBit(DHT_GPIO_PORT, DHT_GPIO_PIN) ? (temp |= 0x01) : (temp &= ~0x01);
+        while (GPIO_ReadInputDataBit(DHT_GPIO_PORT, DHT_GPIO_PIN))
+            ;
+    }
+    return temp;
+}
