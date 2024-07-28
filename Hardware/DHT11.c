@@ -75,3 +75,21 @@ uint8_t DHT_Get_Byte_Data(void)
     }
     return temp;
 }
+
+/**
+ * @brief  获取DHT11的温度湿度数据
+ * @param  buffer[]：需要传入一个存储数据的数组
+ * @return 返回数据校验是否正确 1：正确 0：失败
+ */
+uint8_t DHT_Get_Temp_Humi_Data(uint8_t buffer[])
+{
+    if (DHT_Start())
+    {
+        buffer[0] = DHT_Get_Byte_Data();
+        buffer[1] = DHT_Get_Byte_Data();
+        buffer[2] = DHT_Get_Byte_Data();
+        buffer[3] = DHT_Get_Byte_Data();
+        buffer[4] = DHT_Get_Byte_Data();
+    }
+    return (buffer[0] + buffer[1] + buffer[2] + buffer[3] == buffer[4]) ? 1 : 0;
+}
